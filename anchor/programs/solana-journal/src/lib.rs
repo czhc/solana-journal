@@ -21,7 +21,16 @@ pub mod solana_journal {
       Ok(())
     }
 
-    
+    pub fn update_entry(
+      ctx: Context<UpdateEntry>,
+      _title: String, // used to find the PDA with struct below
+      new_message: String,
+    ) -> Result<()>{
+      let journal_entry = &mut ctx.accounts.journal_entry;
+      journal_entry.message = new_message;
+
+      Ok(())
+    }
 }
 
 #[account]
@@ -35,6 +44,8 @@ pub struct JournalEntryState {
   pub entry_id: u64,
 }
 
+// Define unique data structures
+
 #[derive(Accounts)] // deserialize and validate accounts
 #[instruction(title: String)]
 pub struct CreateEntry<'info> {
@@ -44,6 +55,23 @@ pub struct CreateEntry<'info> {
     bump,
     payer = owner,
     space = 8 + JournalEntryState::INIT_SPACE,
+  )]
+  pub journal_entry: Account<'info, JournalEntryState>,
+  #[account(mut)]
+  pub owner: Signer<'info>,
+  pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)] // deserialize and validate accounts
+#[instruction(title: String)]
+pub struct UpdateEntry<'info> {
+  #[account(
+    mut,
+    seeds = [title.as_bytes(), owner.key().as_ref()],
+    bump,
+    realloc = 8 + JournalEntryState::INIT_SPACE,
+    realloc::payer = owner,
+    realloc::zero = true
   )]
   pub journal_entry: Account<'info, JournalEntryState>,
   #[account(mut)]
