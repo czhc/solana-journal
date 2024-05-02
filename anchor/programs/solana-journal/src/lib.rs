@@ -31,6 +31,13 @@ pub mod solana_journal {
 
       Ok(())
     }
+
+    pub fn delete_entry(
+      _ctx: Context<DeleteEntry>, //also not used here
+      _title: String,     
+    ) -> Result<()>{
+      Ok(())
+    }
 }
 
 #[account]
@@ -62,7 +69,7 @@ pub struct CreateEntry<'info> {
   pub system_program: Program<'info, System>,
 }
 
-#[derive(Accounts)] // deserialize and validate accounts
+#[derive(Accounts)]
 #[instruction(title: String)]
 pub struct UpdateEntry<'info> {
   #[account(
@@ -70,6 +77,24 @@ pub struct UpdateEntry<'info> {
     seeds = [title.as_bytes(), owner.key().as_ref()],
     bump,
     realloc = 8 + JournalEntryState::INIT_SPACE,
+    realloc::payer = owner,
+    realloc::zero = true
+  )]
+  pub journal_entry: Account<'info, JournalEntryState>,
+  #[account(mut)]
+  pub owner: Signer<'info>,
+  pub system_program: Program<'info, System>,
+}
+
+
+#[derive(Accounts)] // deserialize and validate accounts
+#[instruction(title: String)]
+pub struct DeleteEntry<'info> {
+  #[account(
+    mut,
+    seeds = [title.as_bytes(), owner.key().as_ref()],
+    bump,
+    close = owner,
     realloc::payer = owner,
     realloc::zero = true
   )]
