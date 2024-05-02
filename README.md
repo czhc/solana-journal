@@ -1,13 +1,13 @@
-# solana-journal
+# Solana Journal
 
-This project is generated with the [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp) generator.
+This project is an introduction to create Solana Dapps using [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp).
 
-## Getting Started
+## Source
+* [How to Build a CRUD dApp on Solana](https://www.youtube.com/watch?v=cW-3jGWq1IE)
 
 ### Prerequisites
 
 - Node v18.18.0 or higher
-
 - Rust v1.70.0 or higher
 - Anchor CLI 0.29.0 or higher
 - Solana CLI 1.17.0 or higher
