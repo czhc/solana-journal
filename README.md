@@ -3,7 +3,7 @@
 This project is an introduction to create Solana Dapps using [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp).
 
 ## Source
-* [How to Build a CRUD dApp on Solana](https://www.youtube.com/watch?v=cW-3jGWq1IE)
+* [How to Build a CRUD dApp on Solana](https://solana.com/developers/guides/dapps/journal)
 
 ### Prerequisites
 
@@ -12,13 +12,18 @@ This project is an introduction to create Solana Dapps using [create-solana-dapp
 - Anchor CLI 0.29.0 or higher
 - Solana CLI 1.17.0 or higher
 
+### Setup
+* [Installing Rust on Mac OS X](https://www.petergirnus.com/blog/rust-macos-how-to-install)
+    * For 
+* [Installing Anchor with AVM](https://www.anchor-lang.com/docs/installation)
+
 ### Installation
 
 #### Clone the repo
 
 ```shell
-git clone <repo-url>
-cd <repo-name>
+git clone solana-journal
+cd solana-journal
 ```
 
 #### Install Dependencies
