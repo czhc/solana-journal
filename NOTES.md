@@ -14,5 +14,28 @@
 * [Installing Rust on Mac OS X](https://www.petergirnus.com/blog/rust-macos-how-to-install)
 * [Installing Anchor](https://www.anchor-lang.com/docs/installation)
 * [Setup local development and install the Solana CLI](https://docs.solanalabs.com/cli/install#macos--linux-1)
+    * docs repo is inactive. 
     * going with `curl` installation, not homebrew. seems like homebrew doesn't include `solana-test-validator` ([src](https://github.com/Homebrew/homebrew-core/blob/4b29949e7f7a3dab682f14aac123c94cdc949978/Formula/s/solana.rb)) at the moment. 
 * [anchor build vs cargo build](https://stackoverflow.com/questions/74273410/difference-between-cargo-build-and-anchor-build)
+
+* Fixing cargo metadata issue: 
+
+Error:
+
+```sh
+➜  anchor git:(main) ✗ cargo metadata
+
+warning: please specify `--format-version` flag explicitly to avoid compatibility problems
+error: process didn't exit successfully: `rustc -vV` (signal: 6, SIGABRT: process abort signal)
+--- stderr
+dyld[20719]: Symbol not found: __ZN4llvm10PGOOptionsC1ENSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEES7_S7_S7_NS_18IntrusiveRefCntPtrINS_3vfs10FileSystemEEENS0_9PGOActionENS0_11CSPGOActionEbb
+```
+
+The error just means `cargo` is not available in your executable PATH. Add the following to your bash profile
+
+```sh
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+Run `cargo metadata` again. 
+
