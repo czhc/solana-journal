@@ -39,3 +39,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 Run `cargo metadata` again. 
 
+* [How to resume a deploy](https://solana.stackexchange.com/questions/5961/how-to-resume-a-deploy)
+* [Deploy a Solana program with the CLI](https://docs.solanalabs.com/cli/examples/deploy-a-program)
+
+

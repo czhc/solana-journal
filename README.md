@@ -2,7 +2,9 @@
 
 This project is an introduction to create Solana Dapps using [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp).
 
+## Links
 * [Developer Notes](./NOTES.md)
+* Contract: [xNT9fpMyDBXvCMAkTafwWdQHkjrAR3gCdXjtubMSA14](https://explorer.solana.com/address/xNT9fpMyDBXvCMAkTafwWdQHkjrAR3gCdXjtubMSA14?cluster=devnet)
 
 ## Source
 * [How to Build a CRUD dApp on Solana](https://solana.com/developers/guides/dapps/journal)
