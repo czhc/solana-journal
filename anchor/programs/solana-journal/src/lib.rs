@@ -32,7 +32,7 @@ pub mod solana_journal {
 
     pub fn delete_entry(
       _ctx: Context<DeleteEntry>, //also not used here
-      _title: String,
+      title: String,
     ) -> Result<()>{
       msg!("Journal entry titled {} deleted", title);
       Ok(())
@@ -94,8 +94,6 @@ pub struct DeleteEntry<'info> {
     seeds = [title.as_bytes(), owner.key().as_ref()],
     bump,
     close = owner,
-    realloc::payer = owner,
-    realloc::zero = true
   )]
   pub journal_entry: Account<'info, JournalEntryState>,
   #[account(mut)]
