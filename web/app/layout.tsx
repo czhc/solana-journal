@@ -12,7 +12,7 @@ export const metadata = {
 const links: { label: string; path: string }[] = [
   { label: 'Account', path: '/account' },
   { label: 'Clusters', path: '/clusters' },
-  { label: 'SolanaJournal Program', path: '/solana-journal' },
+  { label: 'Solana Journal', path: '/solana-journal' },
 ];
 
 export default function RootLayout({
@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className='h-max'>
         <ReactQueryProvider>
           <ClusterProvider>
             <SolanaProvider>
