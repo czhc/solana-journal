@@ -13,8 +13,8 @@ This project is an introduction to create Solana Dapps using [create-solana-dapp
 
 - Node v18.18.0 or higher
 - Rust v1.70.0 or higher
-- Anchor CLI 0.29.0 or higher
-- Solana CLI 1.17.0 or higher
+- Anchor CLI 0.29.0 (not 0.30.0) - see issues with anchor 0.30 IDL in [Notes](./NOTES.md)
+- Solana CLI 1.18.0 or higher
 
 ### Setup
 * [Installing Rust on Mac OS X](https://www.petergirnus.com/blog/rust-macos-how-to-install)

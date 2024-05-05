@@ -14,6 +14,11 @@ import { useCluster } from '../cluster/cluster-data-access';
 import { useAnchorProvider } from '../solana/solana-provider';
 import { useTransactionToast } from '../ui/ui-layout';
 
+interface EntryArgs {
+  owner: PublicKey,
+  title: string,
+  message: string
+}
 export function useSolanaJournalProgram() {
   const { connection } = useConnection();
   const { cluster } = useCluster();
@@ -25,9 +30,10 @@ export function useSolanaJournalProgram() {
   );
   const program = new Program(SolanaJournalIDL, programId, provider);
 
+
   const accounts = useQuery({
     queryKey: ['solana-journal', 'all', { cluster }],
-    queryFn: () => program.account.solanaJournal.all(),
+    queryFn: () => program.account.journalEntryState.all(),
   });
 
   const getProgramAccount = useQuery({
@@ -35,14 +41,16 @@ export function useSolanaJournalProgram() {
     queryFn: () => connection.getParsedAccountInfo(programId),
   });
 
-  const initialize = useMutation({
-    mutationKey: ['solana-journal', 'initialize', { cluster }],
-    mutationFn: (keypair: Keypair) =>
-      program.methods
-        .initialize()
-        .accounts({ solanaJournal: keypair.publicKey })
-        .signers([keypair])
-        .rpc(),
+  const createEntry = useMutation<string, Error, EntryArgs>({
+    mutationKey: ['solana-journal', 'create', { cluster }],
+    mutationFn: async ({title, message, owner}) => {
+      const [journalEntryAddress] = await PublicKey.findProgramAddress(
+        [Buffer.from(title), owner.toBuffer()],
+        programId,
+      );
+
+      return program.methods.createEntry(title, message).accounts({journalEntry: journalEntryAddress}).rpc();
+    },
     onSuccess: (signature) => {
       transactionToast(signature);
       return accounts.refetch();
@@ -55,7 +63,7 @@ export function useSolanaJournalProgram() {
     programId,
     accounts,
     getProgramAccount,
-    initialize,
+    createEntry
   };
 }
 
@@ -66,58 +74,43 @@ export function useSolanaJournalProgramAccount({
 }) {
   const { cluster } = useCluster();
   const transactionToast = useTransactionToast();
-  const { program, accounts } = useSolanaJournalProgram();
+  const { programId, program, accounts } = useSolanaJournalProgram();
 
   const accountQuery = useQuery({
     queryKey: ['solana-journal', 'fetch', { cluster, account }],
-    queryFn: () => program.account.solanaJournal.fetch(account),
+    queryFn: () => program.account.journalEntryState.fetch(account),
   });
 
-  const closeMutation = useMutation({
-    mutationKey: ['solana-journal', 'close', { cluster, account }],
-    mutationFn: () =>
-      program.methods.close().accounts({ solanaJournal: account }).rpc(),
+  const updateEntry = useMutation<string, Error, EntryArgs>({
+    mutationKey: ['solana-journal', 'update', { cluster }],
+    mutationFn: async ({title, message, owner}) => {
+      const [journalEntryAddress] = await PublicKey.findProgramAddress(
+        [Buffer.from(title), owner.toBuffer()],
+        programId,
+      );
+
+      return program.methods.updateEntry(title, message).accounts({journalEntry: journalEntryAddress}).rpc();
+    },
+    onSuccess: (signature) => {
+      transactionToast(signature);
+      return accounts.refetch();
+    },
+    onError: () => toast.error('Failed to initialize account'),
+  });
+
+  const deleteEntry = useMutation({
+    mutationKey: ['solana-journal', 'delete', { cluster }],
+    mutationFn: (title: string) =>
+      program.methods.deleteEntry(title).accounts({journalEntry: account}).rpc(),
     onSuccess: (tx) => {
       transactionToast(tx);
       return accounts.refetch();
-    },
-  });
-
-  const decrementMutation = useMutation({
-    mutationKey: ['solana-journal', 'decrement', { cluster, account }],
-    mutationFn: () =>
-      program.methods.decrement().accounts({ solanaJournal: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx);
-      return accountQuery.refetch();
-    },
-  });
-
-  const incrementMutation = useMutation({
-    mutationKey: ['solana-journal', 'increment', { cluster, account }],
-    mutationFn: () =>
-      program.methods.increment().accounts({ solanaJournal: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx);
-      return accountQuery.refetch();
-    },
-  });
-
-  const setMutation = useMutation({
-    mutationKey: ['solana-journal', 'set', { cluster, account }],
-    mutationFn: (value: number) =>
-      program.methods.set(value).accounts({ solanaJournal: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx);
-      return accountQuery.refetch();
-    },
-  });
+    }
+  })
 
   return {
     accountQuery,
-    closeMutation,
-    decrementMutation,
-    incrementMutation,
-    setMutation,
+    updateEntry,
+    deleteEntry
   };
 }
