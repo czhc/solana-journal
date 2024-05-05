@@ -49,4 +49,6 @@ Run `cargo metadata` again.
 * [Deploy a Solana program with the CLI](https://docs.solanalabs.com/cli/examples/deploy-a-program)
 * Anchor incompatibility between 0.29 and 0.30 due to [metadataIDL changes](https://github.com/coral-xyz/anchor/pull/2824)
 
+* Using DevNet on phantom [guide](https://www.blog.goosefx.io/switch-from-mainnet-to-devnet-network-on-solana/)
+
 

@@ -2,6 +2,8 @@
 
 This project is an introduction to create Solana Dapps using [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp).
 
+![Demo](./demo.gif)
+
 ## Links
 * [Developer Notes](./NOTES.md)
 * Contract: [xNT9fpMyDBXvCMAkTafwWdQHkjrAR3gCdXjtubMSA14](https://explorer.solana.com/address/xNT9fpMyDBXvCMAkTafwWdQHkjrAR3gCdXjtubMSA14?cluster=devnet)
